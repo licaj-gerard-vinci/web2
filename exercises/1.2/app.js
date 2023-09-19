@@ -18,10 +18,10 @@ const stats = {};
 
 app.use((req, res, next) => {
 const currentOperation  = `- ${req.method} ${req.path}`;
-const currentOperationCounter = stats[currentOperation];
-if (currentOperationCounter === undefined) stats[currentOperation] = 0;
+if (stats[currentOperation] === undefined) stats[currentOperation] = 0;
 stats[currentOperation]++;
 console.log("Request counter: ");
+
 for(key in stats) {
     console.log(`${key} : ${stats[key]}`);
 }
