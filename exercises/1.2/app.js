@@ -24,8 +24,8 @@ console.log("Request counter: ");
 
 for(key in stats) {
     console.log(`${key} : ${stats[key]}`);
-}
-    next();
+  }
+  next();
   });
 
 app.use(express.static(path.join(__dirname, 'public')));
