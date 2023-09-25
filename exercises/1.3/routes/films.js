@@ -40,25 +40,44 @@ router.get('/:id', (req, res) => {
 
 router.get('/', (req, res, next) => {
    const minimuduration = req.query['minimum-duration'] ?? undefined;
+   const orderByTitle = req?.query?.order?.includes('title') ? req.query.order : undefined;
+   const orderByChar = req.query.char ?? undefined;
    let filtre;
-   if(minimuduration) {
+   let filtre2;
+
+  if(orderByChar) {
+    filtre2 = [];
+    for (const film of FILMS) {
+      console.log(film.title.charAt(0));
+      if(film.title.charAt(0) == orderByChar) {
+          filtre2.push(film);
+      } 
+  }
+  res.json(filtre2 ?? FILMS);
+  }
+  else if(orderByTitle) {
+    let orderedMenu;
+    if (orderByTitle) orderedMenu = [...FILMS].sort((a, b) => a.title.localeCompare(b.title));
+    if (orderByTitle === '-title') orderedMenu = orderedMenu.reverse();
+    res.json(orderedMenu ?? FILMS);
+  } 
+  else{
     filtre = [];
     for (const film of FILMS) {
         if(film.duration >= minimuduration) {
-            
             filtre.push(film);
         } 
     }
-  }res.json(filtre ?? FILMS);
+    res.json(filtre ?? FILMS);
+  }
 });
+
 
 router.post('/', (req, res) => {
     const budget = req?.body?.budget > 0 ? req.body.budget : undefined;
     const duration = req?.body?.duration > 0 ? req.body.duration : undefined;
     const title = req?.body?.title?.length !== 0 ? req.body.title : undefined;
     const link = req?.body?.link?.length !== 0 ? req.body.link : undefined;
-
-    console.log("in request");
   
     if (!budget || !duration) return res.sendStatus(400); // error code '400 Bad request'
   
@@ -73,7 +92,6 @@ router.post('/', (req, res) => {
       budget: budget,
       link: link
     };
-  
     FILMS.push(newFilm);
     res.json(newFilm);
   });
