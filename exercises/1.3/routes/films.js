@@ -55,13 +55,15 @@ router.get('/', (req, res, next) => {
   }
   res.json(filtre2 ?? FILMS);
   }
+
   else if(orderByTitle) {
     let orderedMenu;
     if (orderByTitle) orderedMenu = [...FILMS].sort((a, b) => a.title.localeCompare(b.title));
     if (orderByTitle === '-title') orderedMenu = orderedMenu.reverse();
     res.json(orderedMenu ?? FILMS);
   } 
-  else{
+
+  else if (minimuduration) {
     filtre = [];
     for (const film of FILMS) {
         if(film.duration >= minimuduration) {
@@ -70,6 +72,9 @@ router.get('/', (req, res, next) => {
     }
     res.json(filtre ?? FILMS);
   }
+
+  res.json(FILMS);
+  
 });
 
 
@@ -79,7 +84,7 @@ router.post('/', (req, res) => {
     const title = req?.body?.title?.length !== 0 ? req.body.title : undefined;
     const link = req?.body?.link?.length !== 0 ? req.body.link : undefined;
   
-    if (!budget || !duration) return res.sendStatus(400); // error code '400 Bad request'
+    if (!budget || !duration || !title || !link) return res.sendStatus(400); // error code '400 Bad request'
   
     const lastItemIndex = FILMS?.length !== 0 ? FILMS.length - 1 : undefined;
     const lastId = lastItemIndex !== undefined ? FILMS[lastItemIndex]?.id : 0;
@@ -95,6 +100,5 @@ router.post('/', (req, res) => {
     FILMS.push(newFilm);
     res.json(newFilm);
   });
-  
 
 module.exports = router;
