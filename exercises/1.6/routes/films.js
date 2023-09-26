@@ -91,8 +91,7 @@ router.put('/:id', (req, res) => {
 
   const updatedFilm = {...FILMS[foundIndex], ...req.body};
   FILMS[foundIndex] = newFilm;
-  res.json(updatedFilm);
-
+  return res.json(updatedFilm);
   }
 
   const lastItemIndex = FILMS?.length !== 0 ? FILMS.length - 1 : undefined;
