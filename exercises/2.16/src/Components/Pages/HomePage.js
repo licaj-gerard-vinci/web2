@@ -1,12 +1,11 @@
 const HomePage = () => {
-
-  fetch('https://v2.jokeapi.dev/joke/Any')
+  fetch('http://localhost:3000/questions')
     .then((response) => {
       if (!response.ok) throw new Error(`fetch error : ${response.status} : ${response.statusText}`);
       return response.json();
     })
-    .then((joke) => {
-      renderJoke(joke);
+    .then((question) => {
+      questions(question);
     })
     .catch((err) => {
       console.error('HomePage::error: ', err);
@@ -14,17 +13,12 @@ const HomePage = () => {
 
   }
 
-function renderJoke(joke) {
+function questions(question) {
   const main = document.querySelector('main');
-  main.innerText = `Category : ${joke.category} \n`;
-  if(joke.joke !== undefined) {
-    main.innerText += joke.joke;
-  }
-  else {
-    main.innerText += joke.setup;
-    main.innerText += joke.delivery;
-  }
-  
+  question.forEach(question) => {
+    
+  });
+  main.innerText += `Question ${question.id}) ${question.question}\n`;
 }
 
 export default HomePage;
